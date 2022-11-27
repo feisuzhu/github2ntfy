@@ -1,0 +1,16 @@
+[Unit]
+Description=GitHub to ntfy.sh Gateway
+Requires=network-online.target
+After=network-online.target
+
+[Service]
+ExecStart=/bin/bash -c 'poetry install && exec poetry run python main.py'
+WorkingDirectory=/home/proton/github2ntfy
+Environment=NTFY_ENDPOINT=FILL_THIS
+Environment=NTFY_TOPIC=GitHub
+Environment=GIT_WEBHOOK_SECRET=TOP_SECRET
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target
