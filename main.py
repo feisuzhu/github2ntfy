@@ -3,6 +3,7 @@
 # -- stdlib --
 import hmac
 import json
+from ssl import ALERT_DESCRIPTION_ACCESS_DENIED
 import requests
 import os
 
@@ -106,6 +107,24 @@ def transform(name, ev):
                 "action": "view",
                 "label": "打开",
                 "url": ev['pull_request']['html_url'],
+                "clear": True
+            }]
+        }
+
+    elif name == "star":
+        action_map = {
+            "created": "🌟",
+            "deleted": "Unstar 了",
+        }
+
+        return {
+            **common,
+            "title": f"@{ev['sender']['login']} {action_map.get(ev['action'], ev['action'])} {ev['repository']['full_name']}",
+            "message": ev['repository']['description'],
+            "actions": [{
+                "action": "view",
+                "label": "查看 Star 的人",
+                "url": ev['sender']['html_url'],
                 "clear": True
             }]
         }
